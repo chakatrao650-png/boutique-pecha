@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page commerçant</title>
+  <style>
+    :root { --c: #e67e22; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #f6f6f6; color: #222; }
+    header { background: var(--c); color: #fff; text-align: center; padding: 32px 16px; }
+    header h1 { margin: 0 0 6px; font-size: 2rem; }
+    header p { margin: 0; }
+    main { max-width: 520px; margin: 0 auto; padding: 16px; }
+    .a-propos { text-align: center; margin: 16px 0 8px; }
+    h2 { color: var(--c); border-bottom: 2px solid var(--c); padding-bottom: 6px; }
+    .produit { background: #fff; border-radius: 12px; padding: 14px; margin: 12px 0;
+               box-shadow: 0 1px 4px rgba(0,0,0,.1); display: flex;
+               justify-content: space-between; align-items: center; gap: 12px; }
+    .produit h3 { margin: 0 0 4px; }
+    .produit p { margin: 0; color: #666; font-size: .9rem; }
+    .prix { font-weight: bold; color: var(--c); margin-top: 6px; }
+    .btn { display: inline-block; background: #25d366; color: #fff; text-decoration: none;
+           padding: 10px 14px; border-radius: 10px; font-weight: bold; text-align: center; }
+    .gros { display: block; margin: 20px 0; padding: 14px; font-size: 1.1rem; }
+    .infos { background: #fff; border-radius: 12px; padding: 14px; line-height: 1.8; }
+    footer { text-align: center; color: #888; font-size: .8rem; padding: 20px; }
+  </style>
+</head>
+<body>
+  <header><h1 id="nom"></h1><p id="slogan"></p></header>
+  <main>
+    <p class="a-propos" id="description"></p>
+    <h2>Nos produits</h2>
+    <div id="liste"></div>
+    <a class="btn gros" id="contact" target="_blank" rel="noopener">💬 Nous écrire sur WhatsApp</a>
+    <h2>Infos pratiques</h2>
+    <div class="infos"><div id="adresse"></div><div id="horaires"></div></div>
+  </main>
+  <footer id="pied"></footer>
+
+  <script>
+    // ====== MODIFIE SEULEMENT CETTE PARTIE POUR CHAQUE CLIENT ======
+    const CONFIG = {
+      nom: "PECHA Scripts",
+      slogan: "Bannières et scripts Termux personnalisés",
+      description: "Ta bannière animée avec ton pseudo, prête en quelques minutes. Paiement par Orange Money, Moov Money ou Wave.",
+      whatsapp: "22377654726",
+      adresse: "Mali - commande et livraison par WhatsApp",
+      horaires: "Réponse rapide sur WhatsApp, tous les jours",
+      couleur: "#1e8449",
+      devise: "FCFA",
+      createur: "",
+      produits: [
+        { nom: "Bannière animée personnalisée", prix: 500, description: "Ton pseudo, 5 thèmes de couleurs, mode d'emploi fourni" },
+        { nom: "Pack bannière + menu Termux", prix: 1000, description: "Bannière, menu de lancement et jeu inclus" },
+        { nom: "Aide à l'installation", prix: 300, description: "Je t'aide à tout installer sur ton téléphone" }
+      ]
+    };
+    // ================================================================
+
+    const $ = id => document.getElementById(id);
+    const lien = msg => "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(msg);
+
+    document.documentElement.style.setProperty("--c", CONFIG.couleur);
+    document.title = CONFIG.nom;
+    $("nom").textContent = CONFIG.nom;
+    $("slogan").textContent = CONFIG.slogan;
+    $("description").textContent = CONFIG.description;
+    $("adresse").textContent = "📍 " + CONFIG.adresse;
+    $("horaires").textContent = "🕒 " + CONFIG.horaires;
+    $("contact").href = lien("Bonjour " + CONFIG.nom + ", j'ai une question.");
+    $("pied").textContent = CONFIG.createur ? "Page créée par " + CONFIG.createur : "";
+
+    CONFIG.produits.forEach(p => {
+      const carte = document.createElement("div");
+      carte.className = "produit";
+      const texte = document.createElement("div");
+      const h = document.createElement("h3");
+      h.textContent = p.nom;
+      const d = document.createElement("p");
+      d.textContent = p.description || "";
+      const prix = document.createElement("div");
+      prix.className = "prix";
+      prix.textContent = p.prix.toLocaleString("fr-FR") + " " + CONFIG.devise;
+      texte.append(h, d, prix);
+      const a = document.createElement("a");
+      a.className = "btn";
+      a.textContent = "Commander";
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.href = lien("Bonjour " + CONFIG.nom + ", je voudrais commander : " + p.nom);
+      carte.append(texte, a);
+      $("liste").appendChild(carte);
+    });
+  </script>
+</body>
+</html>
