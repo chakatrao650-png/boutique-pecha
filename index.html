@@ -40,6 +40,9 @@
     .infos { line-height: 1.9; }
     #pied { color: #0a0; font-size: .8rem; margin-top: 18px; }
   </style>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
   <canvas id="matrix"></canvas>
@@ -139,6 +142,11 @@
     window.addEventListener("resize", initMatrix);
     initMatrix();
     setInterval(dessiner, 50);
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    }
   </script>
 </body>
 </html>
