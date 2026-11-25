@@ -8,7 +8,7 @@
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: #000; color: #0f0;
            font-family: "Courier New", monospace; display: flex;
-           justify-content: center; align-items: flex-start; padding: 24px 14px; }
+           justify-content: center; align-items: flex-start; padding: 24px 14px 110px; }
     #matrix { position: fixed; inset: 0; z-index: -1; }
     .carte { width: 100%; max-width: 460px; background: rgba(0,0,0,.84);
              border: 2px solid #0f0; border-radius: 14px; padding: 20px;
@@ -21,24 +21,37 @@
       96% { color: #0f0; text-shadow: 0 0 12px #0f0; transform: translateX(-4px); }
     }
     h2 { color: #f00; text-shadow: 0 0 8px #f00; font-size: 1.2rem;
-         margin: 24px 0 10px; letter-spacing: 2px; }
+         margin: 22px 0 10px; letter-spacing: 2px; }
     p { margin: 8px 0; }
-    .produit { border: 2px solid #0f0; border-radius: 12px; padding: 14px; margin: 12px 0;
+    .page { display: none; }
+    .page.active { display: block; }
+    .produit, .moyen { border: 2px solid #0f0; border-radius: 12px; padding: 14px; margin: 12px 0;
                text-align: left; box-shadow: 0 0 8px rgba(0,255,0,.4); }
-    .produit h3 { margin: 0 0 4px; color: #fff; }
+    .produit h3, .moyen h3 { margin: 0 0 4px; color: #fff; }
     .produit p { margin: 0 0 8px; color: #0c0; font-size: .9rem; }
     .prix { color: #ff0; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; }
-    .btn { display: block; text-decoration: none; padding: 12px 10px; border-radius: 10px;
+    .numero { color: #ff0; font-size: 1.3rem; font-weight: bold; margin: 6px 0 10px; }
+    .btn { display: block; width: 100%; font-family: inherit; font-size: 1rem; cursor: pointer;
+           text-decoration: none; padding: 12px 10px; margin: 10px 0; border-radius: 10px;
            border: 2px solid #0f0; background: #000; color: #0f0; text-align: center;
            transition: .2s; }
     .btn:hover, .btn:active { background: #0f0; color: #000; box-shadow: 0 0 12px #0f0; }
-    .gros { margin: 20px 0 6px; font-size: 1.05rem; border-color: #f00; color: #f00; }
-    .gros:hover, .gros:active { background: #f00; color: #000; box-shadow: 0 0 12px #f00; }
-    #demo { display: none; }
+    .rouge { border-color: #f00; color: #f00; }
+    .rouge:hover, .rouge:active { background: #f00; color: #000; box-shadow: 0 0 12px #f00; }
     video { width: 100%; border: 2px solid #0f0; border-radius: 12px;
             box-shadow: 0 0 12px rgba(0,255,0,.5); background: #000; }
-    .infos { line-height: 1.9; }
+    .infos { line-height: 1.9; margin-top: 18px; }
     #pied { color: #0a0; font-size: .8rem; margin-top: 18px; }
+    #nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+           width: 100%; max-width: 460px; display: flex; gap: 4px; padding: 8px 8px;
+           padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+           background: rgba(0,0,0,.95); border: 2px solid #0f0; border-bottom: none;
+           border-radius: 16px 16px 0 0; box-shadow: 0 0 14px #0f0; }
+    #nav button { flex: 1; background: none; border: none; color: #0a0; cursor: pointer;
+                  font-family: inherit; font-size: 1.5rem; padding: 6px 2px; border-radius: 12px; }
+    #nav button span { display: block; font-size: .7rem; margin-top: 2px; }
+    #nav button.actif { color: #0f0; background: rgba(0,255,0,.14);
+                        text-shadow: 0 0 10px #0f0; font-weight: bold; }
   </style>
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#000000">
@@ -50,21 +63,50 @@
   <main class="carte">
     <h1 id="nom"></h1>
     <p id="slogan"></p>
-    <p id="description"></p>
-    <section id="demo">
+
+    <section id="boutique" class="page">
+      <p id="description"></p>
+      <h2>// PRODUITS</h2>
+      <div id="liste"></div>
+      <div class="infos"><div id="adresse"></div><div id="horaires"></div></div>
+    </section>
+
+    <section id="demo" class="page">
       <h2>// DÉMO</h2>
       <video id="video" controls playsinline preload="metadata"></video>
     </section>
-    <h2>// PRODUITS</h2>
-    <div id="liste"></div>
-    <a class="btn gros" id="contact" target="_blank" rel="noopener">💬 Nous écrire sur WhatsApp</a>
-    <h2>// INFOS</h2>
-    <div class="infos"><div id="adresse"></div><div id="horaires"></div></div>
-    <p id="pied"></p>
+
+    <section id="paiement" class="page">
+      <h2>// PAIEMENT</h2>
+      <p id="intro-paiement"></p>
+      <div id="paiements"></div>
+      <p>Après ton paiement, envoie la capture sur WhatsApp. Ta commande est livrée dès que le paiement est confirmé.</p>
+      <a class="btn rouge" id="preuve" target="_blank" rel="noopener">📸 J'ai payé : envoyer la preuve</a>
+    </section>
+
+    <section id="contact" class="page">
+      <h2>// CONTACT</h2>
+      <a class="btn" id="c-wa" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="btn" id="c-tel">📞 Appeler</a>
+      <a class="btn" id="c-sms">✉️ Envoyer un SMS</a>
+      <p id="pied"></p>
+    </section>
   </main>
+
+  <nav id="nav">
+    <button data-page="boutique">🛒<span>Boutique</span></button>
+    <button data-page="demo" id="tab-demo" style="display:none">🎬<span>Démo</span></button>
+    <button data-page="paiement">💳<span>Paiement</span></button>
+    <button data-page="contact">💬<span>Contact</span></button>
+  </nav>
 
   <script>
     const CONFIG = {
+      paiements: [
+        { nom: "Orange Money", numero: "77654726" },
+        { nom: "Moov Money", numero: "68500811" },
+        { nom: "Wave", numero: "77654726" }
+      ],
       nom: "PECHA Scripts",
       slogan: "Bannières et scripts Termux personnalisés",
       description: "Ta bannière animée avec ton pseudo, prête en quelques minutes. Paiement par Orange Money, Moov Money ou Wave.",
@@ -90,13 +132,9 @@
     $("description").textContent = CONFIG.description;
     $("adresse").textContent = "📍 " + CONFIG.adresse;
     $("horaires").textContent = "🕒 " + CONFIG.horaires;
-    $("contact").href = lien("Bonjour " + CONFIG.nom + ", j'ai une question.");
     $("pied").textContent = CONFIG.createur ? "Page créée par " + CONFIG.createur : "";
 
-    const v = $("video");
-    v.addEventListener("loadedmetadata", () => { $("demo").style.display = "block"; });
-    v.src = CONFIG.video || "demo.mp4";
-
+    // Produits
     CONFIG.produits.forEach(p => {
       const carte = document.createElement("div");
       carte.className = "produit";
@@ -116,6 +154,68 @@
       carte.append(h, d, prix, a);
       $("liste").appendChild(carte);
     });
+
+    // Moyens de paiement
+    const moyens = (CONFIG.paiements || []).filter(p => p.numero);
+    $("intro-paiement").textContent = moyens.length
+      ? "Moyens de paiement disponibles :"
+      : "Demande-nous les moyens de paiement sur WhatsApp.";
+    moyens.forEach(p => {
+      const carte = document.createElement("div");
+      carte.className = "moyen";
+      const h = document.createElement("h3");
+      h.textContent = p.nom;
+      const n = document.createElement("div");
+      n.className = "numero";
+      n.textContent = p.numero;
+      const b = document.createElement("button");
+      b.className = "btn";
+      b.textContent = "Copier le numéro";
+      b.addEventListener("click", () => {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(p.numero)
+            .then(() => { b.textContent = "✔ Copié"; })
+            .catch(() => { b.textContent = "Copie impossible"; });
+        } else {
+          b.textContent = "Copie impossible";
+        }
+        setTimeout(() => { b.textContent = "Copier le numéro"; }, 1500);
+      });
+      carte.append(h, n, b);
+      $("paiements").appendChild(carte);
+    });
+    $("preuve").href = lien("Bonjour " + CONFIG.nom + ", j'ai effectué le paiement. Voici la capture :");
+
+    // Contact
+    $("c-wa").href = lien("Bonjour " + CONFIG.nom + ", j'ai une question.");
+    $("c-tel").href = "tel:+" + CONFIG.whatsapp;
+    $("c-sms").href = "sms:+" + CONFIG.whatsapp;
+
+    // Navigation en bas
+    const PAGES = ["boutique", "demo", "paiement", "contact"];
+    let demoOk = false, choisi = false;
+    const voulue = location.hash.slice(1);
+    function aller(nom) {
+      if (!PAGES.includes(nom) || (nom === "demo" && !demoOk)) nom = "boutique";
+      PAGES.forEach(p => $(p).classList.toggle("active", p === nom));
+      document.querySelectorAll("#nav button").forEach(b =>
+        b.classList.toggle("actif", b.dataset.page === nom));
+      if (location.hash !== "#" + nom) history.replaceState(null, "", "#" + nom);
+      window.scrollTo(0, 0);
+    }
+    document.querySelectorAll("#nav button").forEach(b =>
+      b.addEventListener("click", () => { choisi = true; aller(b.dataset.page); }));
+
+    // La vidéo (demo.mp4) n'apparaît que si le fichier existe
+    const v = $("video");
+    v.addEventListener("loadedmetadata", () => {
+      demoOk = true;
+      $("tab-demo").style.display = "block";
+      if (voulue === "demo" && !choisi) aller("demo");
+    });
+    v.src = CONFIG.video || "demo.mp4";
+
+    aller(voulue);
 
     // Pluie de caractères en arrière-plan
     const canvas = $("matrix");
