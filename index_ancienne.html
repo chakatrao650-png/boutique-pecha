@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PECHA Scripts</title>
+<meta name="theme-color" content="#000000">
+<style>
+:root{--c1:#00ff00;--rgb:0,255,0;--c2:#ff0000}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#000;color:var(--c1);font-family:"Courier New",monospace;display:flex;justify-content:center;align-items:flex-start;padding:24px 14px 110px}
+#matrix{position:fixed;inset:0;z-index:0;pointer-events:none}
+.carte{position:relative;z-index:1;width:100%;max-width:460px;background:rgba(0,0,0,.88);border:2px solid var(--c1);border-radius:14px;padding:20px;text-align:center;box-shadow:0 0 18px var(--c1)}
+h1{color:var(--c2);font-size:2rem;margin:0 0 6px;letter-spacing:3px;text-shadow:0 0 12px var(--c2)}h2{color:var(--c2);font-size:1.1rem;margin:22px 0 10px}p{margin:8px 0}
+.page{display:none}.page.active{display:block}.produit,.moyen,.admin-card{border:2px solid var(--c1);border-radius:12px;padding:14px;margin:12px 0;text-align:left;box-shadow:0 0 8px rgba(var(--rgb),.35)}
+.produit h3,.moyen h3{margin:0 0 5px;color:#fff}.produit p{font-size:.9rem}.prix,.numero{color:#ff0;font-weight:bold;font-size:1.1rem;margin:8px 0}
+.btn,button{display:block;width:100%;font:inherit;font-size:1rem;cursor:pointer;text-decoration:none;padding:11px 9px;margin:9px 0;border-radius:9px;border:2px solid var(--c1);background:#000;color:var(--c1);text-align:center}
+.btn:active,button:active{background:var(--c1);color:#000}.red{border-color:var(--c2);color:var(--c2)}
+input,textarea,select{width:100%;padding:11px;margin:6px 0 12px;background:#080808;color:#fff;border:1px solid var(--c1);border-radius:7px;font:inherit}
+label{display:block;text-align:left;color:var(--c1);font-size:.9rem}.small{font-size:.78rem;color:#aaa;line-height:1.5}
+#nav{position:fixed;z-index:5;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:460px;display:flex;gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(0,0,0,.97);border:2px solid var(--c1);border-bottom:0;border-radius:16px 16px 0 0;box-shadow:0 0 14px var(--c1)}
+#nav button{flex:1;border:0;margin:0;padding:7px 2px;font-size:1.25rem;color:rgba(var(--rgb),.7)}#nav span{display:block;font-size:.65rem}#nav button.active{color:var(--c1);background:rgba(var(--rgb),.14)}
+.palette{display:flex;justify-content:center;gap:9px;margin:12px}.dot{width:27px;height:27px;border-radius:50%;border:2px solid white;padding:0;margin:0}
+video{width:100%;border:2px solid var(--c1);border-radius:10px;background:#000}
+.row{display:flex;gap:8px}.row>*{flex:1}.admin-hidden{display:none!important}
+</style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<main class="carte">
+<h1 id="shopName">PECHA Scripts</h1><p id="shopSlogan">Bannières et scripts Termux personnalisés</p>
+<div id="palette" class="palette"></div>
+<section id="boutique" class="page active"><p id="shopDesc"></p><h2>// PRODUITS</h2><div id="products"></div><p id="shopAddress"></p><p id="shopHours"></p></section>
+<section id="demo" class="page"><h2>// DÉMO</h2><video id="video" controls playsinline preload="metadata"></video></section>
+<section id="paiement" class="page"><h2>// PAIEMENT</h2><p>Moyens de paiement disponibles :</p><div id="payments"></div><p>Après paiement, envoie la preuve sur WhatsApp.</p><a class="btn red" id="proof" target="_blank" rel="noopener">📸 Envoyer la preuve</a></section>
+<section id="contact" class="page"><h2>// CONTACT</h2><a class="btn" id="whatsapp" target="_blank" rel="noopener">💬 WhatsApp</a><a class="btn" id="call">📞 Appeler</a><p id="creator"></p></section>
+<section id="adminLogin" class="page"><h2>// ACCÈS ADMINISTRATEUR</h2><label>Code PIN</label><input id="pinInput" type="password" inputmode="numeric" maxlength="12" placeholder="Entre ton PIN"><button id="loginBtn">SE CONNECTER</button><p id="loginMsg" class="small"></p><p class="small">Accès local sur cet appareil. Le PIN dans une page HTML n'est pas une protection forte.</p></section>
+<section id="admin" class="page"><h2>// TABLEAU DE BORD</h2><p class="small">Modifie les données puis appuie sur Enregistrer.</p>
+<div class="admin-card"><h3>Informations boutique</h3><label>Nom</label><input id="aName"><label>Slogan</label><input id="aSlogan"><label>Description</label><textarea id="aDesc" rows="3"></textarea><label>WhatsApp (indicatif pays, chiffres uniquement)</label><input id="aWhats"><label>Adresse / zone</label><input id="aAddress"><label>Horaires</label><input id="aHours"><label>Créateur (facultatif)</label><input id="aCreator"><label>Vidéo (nom du fichier, ex. demo.mp4)</label><input id="aVideo"></div>
+<div class="admin-card"><h3>Ajouter un produit</h3><label>Nom</label><input id="newProductName"><label>Description</label><input id="newProductDesc"><label>Prix en FCFA</label><input id="newProductPrice" type="number" min="0"><button id="addProduct">＋ AJOUTER LE PRODUIT</button><div id="adminProducts"></div></div>
+<div class="admin-card"><h3>Moyens de paiement</h3><div id="adminPayments"></div><label>Nom du moyen</label><input id="newPayName" placeholder="Orange Money"><label>Numéro</label><input id="newPayNumber" inputmode="numeric"><button id="addPayment">＋ AJOUTER LE MOYEN</button></div>
+<div class="admin-card"><h3>Apparence</h3><label>Thème</label><select id="aTheme"><option value="vert">Vert</option><option value="bleu">Bleu</option><option value="rouge">Rouge</option><option value="jaune">Jaune</option><option value="violet">Violet</option><option value="orange">Orange</option><option value="rose">Rose</option><option value="cyan">Cyan</option></select></div>
+<button id="saveAdmin">💾 ENREGISTRER LES MODIFICATIONS</button><button id="logout" class="red">DÉCONNEXION</button><button id="resetLocal">RÉINITIALISER LES DONNÉES LOCALES</button>
+</section>
+</main>
+<nav id="nav">
+<button data-page="boutique">🛒<span>Boutique</span></button><button data-page="demo">🎬<span>Démo</span></button><button data-page="paiement">💳<span>Paiement</span></button><button data-page="contact">💬<span>Contact</span></button><button data-page="adminLogin">🔐<span>Admin</span></button>
+</nav>
+<script>
+const DEFAULT_CONFIG={
+ theme:"vert",nom:"PECHA Scripts",slogan:"Bannières et scripts Termux personnalisés",
+ description:"Ta bannière animée avec ton pseudo, prête en quelques minutes. Paiement par Orange Money, Moov Money ou Wave.",
+ whatsapp:"22377654726",adresse:"Mali - commande et livraison par WhatsApp",horaires:"Réponse rapide sur WhatsApp, tous les jours",
+ createur:"",devise:"FCFA",video:"demo.mp4",
+ paiements:[{nom:"Orange Money",numero:"77654726"},{nom:"Moov Money",numero:"68500811"},{nom:"Wave",numero:"77654726"}],
+ produits:[{nom:"Bannière animée personnalisée",prix:500,description:"Ton pseudo, 5 thèmes de couleurs, mode d'emploi fourni"},{nom:"Pack bannière + menu Termux",prix:1000,description:"Bannière, menu de lancement et jeu inclus"},{nom:"Aide à l'installation",prix:300,description:"Je t'aide à tout installer sur ton téléphone"}]
+};
+const STORAGE_KEY="pecha_shop_config_v1";
+// Change ce PIN avant utilisation. Ce verrouillage est pratique, mais pas une sécurité forte.
+const ADMIN_PIN="2468";
+const THEMES={vert:["#00ff00","0,255,0","#ff0000"],bleu:["#00aaff","0,170,255","#00e5ff"],rouge:["#ff2832","255,40,50","#ffc800"],jaune:["#ffd400","255,212,0","#ff7a00"],violet:["#b44cff","180,76,255","#ff4ccd"],orange:["#ff8c00","255,140,0","#ffe600"],rose:["#ff3ca0","255,60,160","#a050ff"],cyan:["#00e6e6","0,230,230","#00ff78"]};
+const $=id=>document.getElementById(id);
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function loadConfig(){try{const saved=localStorage.getItem(STORAGE_KEY);if(saved){const x=JSON.parse(saved);return {...clone(DEFAULT_CONFIG),...x,produits:Array.isArray(x.produits)?x.produits:clone(DEFAULT_CONFIG.produits),paiements:Array.isArray(x.paiements)?x.paiements:clone(DEFAULT_CONFIG.paiements)}}}catch(e){}return clone(DEFAULT_CONFIG)}
+let CONFIG=loadConfig(),adminUnlocked=false;
+function applyTheme(name){const t=THEMES[name]||THEMES.vert;document.documentElement.style.setProperty("--c1",t[0]);document.documentElement.style.setProperty("--rgb",t[1]);document.documentElement.style.setProperty("--c2",t[2])}
+function wa(msg){return "https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent(msg)}
+function render(){
+ applyTheme(CONFIG.theme);document.title=CONFIG.nom;$("shopName").textContent=CONFIG.nom;$("shopSlogan").textContent=CONFIG.slogan;$("shopDesc").textContent=CONFIG.description;$("shopAddress").textContent="📍 "+CONFIG.adresse;$("shopHours").textContent="🕒 "+CONFIG.horaires;$("creator").textContent=CONFIG.createur?"Page créée par "+CONFIG.createur:"";
+ $("products").innerHTML="";CONFIG.produits.forEach((p,i)=>{const card=document.createElement("div");card.className="produit";const h=document.createElement("h3");h.textContent=p.nom;const d=document.createElement("p");d.textContent=p.description||"";const price=document.createElement("div");price.className="prix";price.textContent=Number(p.prix).toLocaleString("fr-FR")+" "+CONFIG.devise;const a=document.createElement("a");a.className="btn";a.textContent="Commander sur WhatsApp";a.href=wa("Bonjour "+CONFIG.nom+", je voudrais commander : "+p.nom);a.target="_blank";a.rel="noopener";card.append(h,d,price,a);$("products").append(card)});
+ $("payments").innerHTML="";CONFIG.paiements.filter(p=>p.numero).forEach(p=>{const card=document.createElement("div");card.className="moyen";const h=document.createElement("h3");h.textContent=p.nom;const n=document.createElement("div");n.className="numero";n.textContent=p.numero;const b=document.createElement("button");b.textContent="Copier le numéro";b.onclick=async()=>{try{await navigator.clipboard.writeText(p.numero);b.textContent="✔ Copié"}catch(e){b.textContent="Copie indisponible ici"}setTimeout(()=>b.textContent="Copier le numéro",1500)};card.append(h,n,b);$("payments").append(card)});
+ $("proof").href=wa("Bonjour "+CONFIG.nom+", j'ai effectué le paiement. Voici la capture :");$("whatsapp").href=wa("Bonjour "+CONFIG.nom+", j'ai une question.");$("call").href="tel:+"+CONFIG.whatsapp;
+ $("palette").innerHTML="";Object.keys(THEMES).forEach(k=>{const b=document.createElement("button");b.className="dot";b.style.background=THEMES[k][0];b.title=k;b.onclick=()=>{CONFIG.theme=k;applyTheme(k);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(CONFIG))}catch(e){}};$("palette").append(b)});
+ const video=$("video");video.src=CONFIG.video||"demo.mp4";video.onloadedmetadata=()=>{document.querySelector('[data-page="demo"]').style.display="block"};video.onerror=()=>{document.querySelector('[data-page="demo"]').style.display="none";if($("demo").classList.contains("active"))showPage("boutique")};
+}
+function showPage(id){if(id==="admin"&&!adminUnlocked)id="adminLogin";document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));if(id==="admin")fillAdmin();window.scrollTo(0,0)}
+document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+$("loginBtn").onclick=()=>{if($("pinInput").value===ADMIN_PIN){adminUnlocked=true;$("pinInput").value="";$("loginMsg").textContent="Accès autorisé.";showPage("admin")}else{$("loginMsg").textContent="PIN incorrect."}};
+function fillAdmin(){
+ $("aName").value=CONFIG.nom;$("aSlogan").value=CONFIG.slogan;$("aDesc").value=CONFIG.description;$("aWhats").value=CONFIG.whatsapp;$("aAddress").value=CONFIG.adresse;$("aHours").value=CONFIG.horaires;$("aCreator").value=CONFIG.createur;$("aVideo").value=CONFIG.video;$("aTheme").value=CONFIG.theme;
+ $("adminProducts").innerHTML="";CONFIG.produits.forEach((p,i)=>{const box=document.createElement("div");box.className="admin-card";const title=document.createElement("strong");title.textContent=p.nom+" — "+p.prix+" FCFA";const edit=document.createElement("button");edit.textContent="Modifier";edit.onclick=()=>{const n=prompt("Nom du produit",p.nom);if(n===null)return;const d=prompt("Description",p.description||"");if(d===null)return;const pr=prompt("Prix en FCFA",p.prix);if(pr===null||!Number.isFinite(Number(pr))||Number(pr)<0){alert("Prix invalide");return}CONFIG.produits[i]={nom:n,description:d,prix:Number(pr)};fillAdmin()};const del=document.createElement("button");del.textContent="Supprimer";del.className="red";del.onclick=()=>{if(confirm("Supprimer ce produit ?")){CONFIG.produits.splice(i,1);fillAdmin()}};box.append(title,edit,del);$("adminProducts").append(box)});
+ $("adminPayments").innerHTML="";CONFIG.paiements.forEach((p,i)=>{const box=document.createElement("div");box.className="admin-card";const label=document.createElement("strong");label.textContent=p.nom+" : "+p.numero;const edit=document.createElement("button");edit.textContent="Modifier";edit.onclick=()=>{const n=prompt("Nom du moyen",p.nom);if(n===null)return;const num=prompt("Numéro",p.numero);if(num===null)return;CONFIG.paiements[i]={nom:n,numero:num.replace(/\s/g,"")};fillAdmin()};const del=document.createElement("button");del.textContent="Supprimer";del.className="red";del.onclick=()=>{if(confirm("Supprimer ce moyen ?")){CONFIG.paiements.splice(i,1);fillAdmin()}};box.append(label,edit,del);$("adminPayments").append(box)})
+}
+$("addProduct").onclick=()=>{const n=$("newProductName").value.trim(),d=$("newProductDesc").value.trim(),p=Number($("newProductPrice").value);if(!n||$("newProductPrice").value===""||!Number.isFinite(p)||p<0){alert("Entre un nom et un prix valide.");return}CONFIG.produits.push({nom:n,description:d,prix:p});$("newProductName").value=$("newProductDesc").value=$("newProductPrice").value="";fillAdmin()};
+$("addPayment").onclick=()=>{const n=$("newPayName").value.trim(),p=$("newPayNumber").value.replace(/\s/g,"");if(!n||!p){alert("Entre le nom et le numéro.");return}CONFIG.paiements.push({nom:n,numero:p});$("newPayName").value=$("newPayNumber").value="";fillAdmin()};
+$("saveAdmin").onclick=()=>{CONFIG.nom=$("aName").value.trim()||CONFIG.nom;CONFIG.slogan=$("aSlogan").value;CONFIG.description=$("aDesc").value;CONFIG.whatsapp=$("aWhats").value.replace(/\D/g,"");CONFIG.adresse=$("aAddress").value;CONFIG.horaires=$("aHours").value;CONFIG.createur=$("aCreator").value;CONFIG.video=$("aVideo").value.trim()||"demo.mp4";CONFIG.theme=$("aTheme").value;try{localStorage.setItem(STORAGE_KEY,JSON.stringify(CONFIG));render();alert("Modifications enregistrées sur ce navigateur/appareil.")}catch(e){alert("Impossible d'enregistrer : stockage indisponible.")}};
+$("logout").onclick=()=>{adminUnlocked=false;showPage("boutique")};
+$("resetLocal").onclick=()=>{if(confirm("Effacer les modifications locales et restaurer les données initiales ?")){localStorage.removeItem(STORAGE_KEY);CONFIG=clone(DEFAULT_CONFIG);render();fillAdmin();alert("Données locales réinitialisées.")}};
+render();
+const cv=$("matrix"),ctx=cv.getContext("2d");let drops=[];function resize(){cv.width=innerWidth;cv.height=innerHeight;drops=Array(Math.ceil(cv.width/16)).fill(0).map(()=>Math.random()*-40)}function rain(){ctx.fillStyle="rgba(0,0,0,.09)";ctx.fillRect(0,0,cv.width,cv.height);ctx.font="16px monospace";drops.forEach((y,i)=>{ctx.fillStyle=Math.random()<.08?(THEMES[CONFIG.theme]||THEMES.vert)[2]:(THEMES[CONFIG.theme]||THEMES.vert)[0];ctx.fillText("01ABCDEF$#@%"[Math.floor(Math.random()*12)],i*16,y*16);drops[i]=y*16>cv.height&&Math.random()>.975?0:y+1})}addEventListener("resize",resize);resize();setInterval(rain,55);
+if(location.hash==="#admin")showPage("adminLogin");else if(["#paiement","#contact","#demo"].includes(location.hash))showPage(location.hash.slice(1));else showPage("boutique");
+</script>
+</body>
+</html>
