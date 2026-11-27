@@ -1,4 +1,4 @@
-const CACHE = "boutique-v1";
+const CACHE = "boutique-v2";
 const FICHIERS = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

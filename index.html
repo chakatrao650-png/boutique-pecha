@@ -1,11 +1,61 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101410"><title>PECHA Scripts</title>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0d100e">
+<meta name="description" content="PECHA Scripts : bannières personnalisées, scripts Termux et assistance au Mali.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>PECHA Scripts</title>
 <style>
 :root{--bg:#0d100e;--panel:#151b17;--panel2:#1b241e;--line:#29362d;--text:#f1f5f1;--muted:#9aa79d;--accent:#b6f36b;--accent2:#d8ff9f;--danger:#ff7777}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#263c27 0,transparent 45%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;padding:0 0 92px}button,input,textarea,select{font:inherit}button,a{ -webkit-tap-highlight-color:transparent}.wrap{width:min(100%,720px);margin:auto;padding:22px 17px}.top{display:flex;align-items:center;justify-content:space-between;padding:10px 0 24px}.brand{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.08em}.logo{width:39px;height:39px;border-radius:13px;background:var(--accent);color:#101510;display:grid;place-items:center;font-weight:950;font-size:18px;box-shadow:0 5px 22px #b6f36b30}.top small{color:var(--muted);font-size:11px;letter-spacing:.16em}.pill{border:1px solid var(--line);background:#ffffff08;color:var(--muted);border-radius:99px;padding:8px 11px;font-size:11px}.hero{padding:28px 0 24px}.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.19em;text-transform:uppercase}.hero h1{font-size:clamp(36px,10vw,58px);line-height:.99;letter-spacing:-.055em;margin:14px 0 13px;max-width:570px}.hero h1 span{color:var(--accent)}.hero p{color:var(--muted);line-height:1.65;max-width:480px;margin:0}.hero-actions{display:flex;gap:10px;margin-top:22px}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:13px 16px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:13px;cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:#11170f}.btn.full{width:100%}.section-head{display:flex;justify-content:space-between;align-items:end;margin:28px 0 13px}.section-head h2{font-size:18px;margin:0;letter-spacing:-.03em}.section-head small{color:var(--muted);font-size:11px}.products{display:grid;grid-template-columns:1fr;gap:12px}.product{background:linear-gradient(145deg,#1b241e,#121713);border:1px solid var(--line);border-radius:18px;padding:17px;position:relative;overflow:hidden}.product:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:#b6f36b0b;right:-50px;top:-55px}.product .tag{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;font-weight:800}.product h3{font-size:17px;margin:10px 0 6px}.product p{font-size:13px;line-height:1.55;color:var(--muted);margin:0 0 15px}.product-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px}.price{font-size:20px;font-weight:850;letter-spacing:-.04em}.price small{font-size:11px;color:var(--muted);font-weight:500}.product .btn{padding:10px 12px;font-size:12px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:17px;margin-top:13px}.panel h3{margin:0 0 12px;font-size:15px}.muted{color:var(--muted);font-size:12px;line-height:1.6}.payment-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}.payment-row:last-child{border:0}.payment-row strong{font-size:13px}.payment-row span{color:var(--accent);font-size:13px;font-weight:700}.page{display:none}.page.active{display:block}.field{margin:12px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field textarea,.field select{width:100%;background:#0d120e;border:1px solid var(--line);color:var(--text);padding:12px;border-radius:10px;outline:none}.field textarea{min-height:76px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--accent)}.admin-card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0}.admin-card h3{margin:0 0 12px}.admin-item{padding:12px 0;border-top:1px solid var(--line)}.admin-item:first-of-type{border:0}.admin-item strong{display:block;font-size:13px;margin-bottom:8px}.two{display:flex;gap:8px}.two>*{flex:1}.danger{color:var(--danger);border-color:#663838}.bottom{position:fixed;z-index:5;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,720px);display:flex;gap:5px;padding:9px 12px calc(9px + env(safe-area-inset-bottom));background:#111713ed;backdrop-filter:blur(18px);border-top:1px solid var(--line)}.bottom button{flex:1;border:0;background:transparent;color:var(--muted);padding:8px 2px;border-radius:10px;font-size:18px;cursor:pointer}.bottom button span{display:block;font-size:10px;margin-top:3px}.bottom button.active{color:var(--accent);background:#b6f36b12}.notice{background:#b6f36b12;border:1px solid #b6f36b40;color:var(--accent2);padding:12px;border-radius:12px;font-size:12px;line-height:1.5}.hide{display:none!important}video{width:100%;border-radius:14px;background:#000;margin-top:12px}
+.install-cta{margin-top:13px;background:#b6f36b12;border:1px solid #b6f36b70;color:var(--accent);font-weight:800;padding:13px 17px;border-radius:12px;cursor:pointer}
+.install-cta:active{transform:scale(.98)}
+
+/* PECHA PREMIUM CYBER DESIGN */
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{background:radial-gradient(ellipse at 50% -15%,#344b2b 0,transparent 42%),linear-gradient(180deg,#0d100e,#090c0a);letter-spacing:.01em}
+.wrap{max-width:760px;padding-top:18px}
+.top{position:relative;padding-bottom:18px}
+.logo{border-radius:14px;box-shadow:0 0 0 5px #b6f36b12,0 8px 28px #b6f36b25}
+.brand{letter-spacing:.11em}
+.pill{background:#b6f36b0b;border-color:#b6f36b30;color:var(--accent)}
+.hero{padding-top:36px;padding-bottom:30px}
+.hero h1{font-size:clamp(39px,11vw,64px);line-height:1.02;max-width:620px}
+.hero h1 span{background:linear-gradient(100deg,#b6f36b,#e1ffb8);background-clip:text;-webkit-background-clip:text;color:transparent}
+.hero p{font-size:14px;max-width:510px}
+.hero-actions{flex-wrap:wrap}
+.btn{transition:transform .2s ease,border-color .2s ease,background .2s ease}
+.btn:active{transform:scale(.97)}
+.btn.primary{box-shadow:0 6px 22px #b6f36b20}
+.install-cta{width:100%;margin:2px 0 12px;text-align:center;font-size:13px;letter-spacing:.02em;box-shadow:inset 0 0 25px #b6f36b08}
+.section-head{margin-top:32px}
+.section-head h2{font-size:20px}
+.product{border-radius:20px;padding:20px;background:linear-gradient(145deg,#202a22,#121713 75%);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.product:active{transform:scale(.985)}
+.product h3{font-size:18px;line-height:1.3}
+.product p{min-height:40px}
+.price{color:var(--accent2);font-size:22px}
+.panel{border-radius:20px;background:linear-gradient(145deg,#19211b,#111612);padding:19px}
+.payment-row{padding:15px 2px}
+.payment-row span{font-variant-numeric:tabular-nums}
+.bottom{border-top-color:#344437;background:#0e140ff2;box-shadow:0 -8px 30px #0005}
+.bottom button{transition:color .2s ease,background .2s ease}
+.bottom button.active{font-weight:800}
+.field input,.field textarea,.field select{border-radius:12px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(hover:hover){
+.product:hover{transform:translateY(-3px);border-color:#789b55;box-shadow:0 12px 35px #0004}
+.btn:hover{border-color:var(--accent)}
+}
+@media(prefers-reduced-motion:reduce){
+*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+
 @media(min-width:560px){.products{grid-template-columns:1fr 1fr}.hero{padding-top:42px}.wrap{padding-left:24px;padding-right:24px}}
 </style></head><body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo">P.</div><div>PECHA<br><small>SCRIPTS STUDIO</small></div></div><div class="pill">● DIGITAL STORE</div></header>
-<section id="shop" class="page active"><div class="hero"><div class="eyebrow">Outils digitaux · Mali</div><h1>Des outils utiles.<br><span>Un style unique.</span></h1><p id="slogan">Bannières, scripts Termux et assistance personnalisée pour donner vie à tes idées.</p><div class="hero-actions"><a class="btn primary" id="heroWa" href="#">Discuter sur WhatsApp ↗</a><a class="btn" href="#productsTitle" onclick="document.getElementById('productsTitle').scrollIntoView({behavior:'smooth'});return false">Explorer ↓</a></div></div><div class="section-head" id="productsTitle"><h2>Nos produits</h2><small id="productCount"></small></div><div class="products" id="products"></div><div class="section-head"><h2>Paiement simple</h2><small>MOYENS DISPONIBLES</small></div><div class="panel"><div id="payments"></div><p class="muted">Après paiement, envoie ta preuve sur WhatsApp. La commande est confirmée après vérification.</p><a class="btn primary full" id="proof" href="#">Envoyer ma preuve ↗</a></div><div class="panel"><h3>Besoin d'un renseignement ?</h3><p class="muted">Une question sur un produit ou une commande ? Contacte directement PECHA.</p><a class="btn full" id="contactWa" href="#">Contacter PECHA ↗</a></div></section>
+<section id="shop" class="page active"><div class="hero"><div class="eyebrow">Outils digitaux · Mali</div><h1>Des outils utiles.<br><span>Un style unique.</span></h1><p id="slogan">Bannières, scripts Termux et assistance personnalisée pour donner vie à tes idées.</p><div class="hero-actions"><a class="btn primary" id="heroWa" href="#">Discuter sur WhatsApp ↗</a><a class="btn" href="#productsTitle" onclick="document.getElementById('productsTitle').scrollIntoView({behavior:'smooth'});return false">Explorer ↓</a></div></div><button class="install-cta" id="installApp" type="button">↓ Installer l'application PECHA</button>
+<div class="section-head" id="productsTitle"><h2>Nos produits</h2><small id="productCount"></small></div><div class="products" id="products"></div><div class="section-head"><h2>Paiement simple</h2><small>MOYENS DISPONIBLES</small></div><div class="panel"><div id="payments"></div><p class="muted">Après paiement, envoie ta preuve sur WhatsApp. La commande est confirmée après vérification.</p><a class="btn primary full" id="proof" href="#">Envoyer ma preuve ↗</a></div><div class="panel"><h3>Besoin d'un renseignement ?</h3><p class="muted">Une question sur un produit ou une commande ? Contacte directement PECHA.</p><a class="btn full" id="contactWa" href="#">Contacter PECHA ↗</a></div></section>
 <section id="demo" class="page"><div class="eyebrow">Présentation</div><h2>Découvre nos réalisations</h2><p class="muted">Une démonstration de nos créations.</p><video id="video" controls playsinline preload="metadata"></video></section>
 <section id="contact" class="page"><div class="eyebrow">Contact</div><h2>Parlons de ton projet.</h2><p class="muted">Pour une commande, une personnalisation ou une assistance, écris-nous directement.</p><div class="panel"><h3>PECHA Scripts</h3><p class="muted" id="hours"></p><a class="btn primary full" id="contactPageWa" href="#">Ouvrir WhatsApp ↗</a></div></section>
 <section id="login" class="page"><div class="eyebrow">Espace privé</div><h2>Administration</h2><p class="muted">Connecte-toi pour gérer les produits et les informations de la boutique sur cet appareil.</p><div class="panel"><div class="field"><label>Code PIN</label><input id="pin" type="password" inputmode="numeric" placeholder="Code administrateur"></div><button class="btn primary full" id="loginBtn">Accéder au tableau de bord</button><p id="loginError" class="muted"></p></div></section>
@@ -16,4 +66,50 @@ const DEFAULT={slogan:'Bannières et scripts Termux personnalisés. Des créatio
 const KEY='pecha_premium_store_v1';const PIN='2468';let data=load(),unlocked=false;function load(){try{return {...DEFAULT,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){return structuredClone(DEFAULT)}}function saveData(){localStorage.setItem(KEY,JSON.stringify(data))}const $=id=>document.getElementById(id);function wa(msg){return 'https://wa.me/'+data.whatsapp+'?text='+encodeURIComponent(msg)}function render(){ $('slogan').textContent=data.slogan;$('hours').textContent=data.hours;$('productCount').textContent=data.products.length+' ARTICLES';$('products').innerHTML='';data.products.forEach(p=>{let el=document.createElement('article');el.className='product';let tag=document.createElement('div');tag.className='tag';tag.textContent='PECHA · DIGITAL';let h=document.createElement('h3');h.textContent=p.name;let d=document.createElement('p');d.textContent=p.desc;let foot=document.createElement('div');foot.className='product-bottom';let price=document.createElement('div');price.className='price';price.textContent=Number(p.price).toLocaleString('fr-FR')+' ';let small=document.createElement('small');small.textContent='FCFA';price.append(small);let a=document.createElement('a');a.className='btn primary';a.textContent='Commander ↗';a.href=wa('Bonjour PECHA, je souhaite commander : '+p.name);a.target='_blank';foot.append(price,a);el.append(tag,h,d,foot);$('products').append(el)});$('payments').innerHTML='';data.payments.forEach(p=>{let r=document.createElement('div');r.className='payment-row';let n=document.createElement('strong');n.textContent=p.name;let num=document.createElement('span');num.textContent=p.number;r.append(n,num);$('payments').append(r)});['heroWa','proof','contactWa','contactPageWa'].forEach(id=>$(id).href=wa(id==='proof'?'Bonjour, voici ma preuve de paiement.':'Bonjour PECHA, je souhaite avoir des informations.'));$('video').src=data.video||'demo.mp4';$('video').onloadedmetadata=()=>document.querySelector('[data-page="demo"]').classList.remove('hide');$('video').onerror=()=>document.querySelector('[data-page="demo"]').classList.add('hide')}
 function page(id){if(id==='admin'&&!unlocked)id='login';document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='admin')fillAdmin();window.scrollTo(0,0)}document.querySelectorAll('.bottom button').forEach(b=>b.onclick=()=>page(b.dataset.page));$('loginBtn').onclick=()=>{if($('pin').value===PIN){unlocked=true;$('pin').value='';$('loginError').textContent='';page('admin')}else $('loginError').textContent='Code incorrect.'};function fillAdmin(){$('aSlogan').value=data.slogan;$('aWhatsapp').value=data.whatsapp;$('aHours').value=data.hours;$('aVideo').value=data.video;$('adminProducts').innerHTML='';data.products.forEach((p,i)=>{let d=document.createElement('div');d.className='admin-item';let s=document.createElement('strong');s.textContent=p.name+' · '+p.price+' FCFA';let row=document.createElement('div');row.className='two';let e=document.createElement('button');e.className='btn';e.textContent='Modifier';e.onclick=()=>{let n=prompt('Nom',p.name);if(n===null)return;let desc=prompt('Description',p.desc);if(desc===null)return;let price=prompt('Prix FCFA',p.price);if(price===null||!Number.isFinite(+price)||+price<0)return alert('Prix invalide');data.products[i]={name:n,desc,price:+price};fillAdmin()};let del=document.createElement('button');del.className='btn danger';del.textContent='Supprimer';del.onclick=()=>{if(confirm('Supprimer ce produit ?')){data.products.splice(i,1);fillAdmin()}};row.append(e,del);d.append(s,row);$('adminProducts').append(d)});$('adminPayments').innerHTML='';data.payments.forEach((p,i)=>{let d=document.createElement('div');d.className='admin-item';let s=document.createElement('strong');s.textContent=p.name+' · '+p.number;let row=document.createElement('div');row.className='two';let e=document.createElement('button');e.className='btn';e.textContent='Modifier';e.onclick=()=>{let n=prompt('Nom',p.name);if(n===null)return;let num=prompt('Numéro',p.number);if(num===null)return;data.payments[i]={name:n,number:num};fillAdmin()};let del=document.createElement('button');del.className='btn danger';del.textContent='Supprimer';del.onclick=()=>{if(confirm('Supprimer ce moyen ?')){data.payments.splice(i,1);fillAdmin()}};row.append(e,del);d.append(s,row);$('adminPayments').append(d)})}
 $('addProduct').onclick=()=>{let name=$('pName').value.trim(),desc=$('pDesc').value.trim(),price=$('pPrice').value;if(!name||price===''||!Number.isFinite(+price)||+price<0)return alert('Remplis le nom et un prix valide.');data.products.push({name,desc,price:+price});$('pName').value=$('pDesc').value=$('pPrice').value='';fillAdmin()};$('addPayment').onclick=()=>{let name=$('payName').value.trim(),number=$('payNumber').value.trim();if(!name||!number)return alert('Entre le nom et le numéro.');data.payments.push({name,number});$('payName').value=$('payNumber').value='';fillAdmin()};$('save').onclick=()=>{data.slogan=$('aSlogan').value;data.whatsapp=$('aWhatsapp').value.replace(/\D/g,'');data.hours=$('aHours').value;data.video=$('aVideo').value.trim()||'demo.mp4';try{saveData();render();alert('Modifications enregistrées sur cet appareil.')}catch(e){alert('Échec de sauvegarde locale.')}};$('logout').onclick=()=>{unlocked=false;page('shop')};$('reset').onclick=()=>{if(confirm('Effacer les modifications locales ?')){localStorage.removeItem(KEY);data=structuredClone(DEFAULT);render();fillAdmin()}};render();
+
+let deferredInstallPrompt = null;
+const installButton = $("installApp");
+
+function installHelp() {
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (ios) {
+    alert("Pour installer PECHA : appuie sur Partager dans Safari, puis sur Ajouter à l’écran d’accueil.");
+  } else {
+    alert("Pour installer PECHA : ouvre le menu ⋮ de Chrome, puis choisis Installer l’application ou Ajouter à l’écran d’accueil.");
+  }
+}
+
+if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) {
+  installButton.classList.add("hide");
+}
+
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  installButton.textContent = "↓ Installer PECHA";
+});
+
+installButton.onclick = async () => {
+  if (!deferredInstallPrompt) {
+    installHelp();
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  const choice = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  if (choice.outcome === "accepted") {
+    installButton.classList.add("hide");
+  }
+};
+
+window.addEventListener("appinstalled", () => {
+  installButton.classList.add("hide");
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(error => console.warn("Service Worker :", error));
+  });
+}
 </script></body></html>
